@@ -722,11 +722,22 @@ IBusInputContext::displayPreeditText (const TextPointer &text, uint cursor_pos, 
 void
 IBusInputContext::slotUpdatePreeditText (const TextPointer &text, uint cursor_pos, bool visible)
 {
+    // set visible to false, if text is empty
+    visible = visible && !text->text ().isEmpty ();
+
+    // set cursor at end, if pos is greater than the text length
+    if (cursor_pos > (uint)text->text ().length ())
+        cursor_pos = text->text ().length ();
+
+    bool update = (m_preedit_visible != visible) || visible;
+
     m_preedit = text;
     m_preedit_visible = visible;
     m_preedit_cursor_pos = cursor_pos;
 
-    displayPreeditText (m_preedit, m_preedit_cursor_pos, visible);
+    if (update) {
+        displayPreeditText (m_preedit, m_preedit_cursor_pos, visible);
+    }
 }
 
 void
