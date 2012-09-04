@@ -12,7 +12,8 @@
 #include "qibusbus.h"
 #include "qibusibusproxy.h"
 #include "qibusdbusproxy.h"
-
+#include <X11/Xlib.h>
+#include <QX11Info>
 
 namespace IBus {
 /**
@@ -121,15 +122,23 @@ QString
 Bus::getSocketPath (void)
 {
     QString display = getenv ("DISPLAY");
-    QStringList strs = display.split(":");
     QString hostname = "unix";
     QString display_number = "0";
+    /* fallback when -display is passed to QApplication with no DISPLAY env */
+    if (display == NULL) {
+        Display * dpy = QX11Info::display();
+        if (dpy)
+            display = XDisplayString(dpy);
+    }
+    if (display != NULL && display.contains(':')) {
+        QStringList strs = display.split(":");
 
-    if (!strs[0].isEmpty())
-        hostname = strs[0];
-    strs = strs[1].split(".");
-    if (!strs[0].isEmpty())
-        display_number = strs[0];
+        if (!strs[0].isEmpty())
+            hostname = strs[0];
+        strs = strs[1].split(".");
+        if (!strs[0].isEmpty())
+            display_number = strs[0];
+    }
 
     QString path =
         QDir::homePath() +
