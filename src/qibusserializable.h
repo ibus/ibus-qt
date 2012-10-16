@@ -91,7 +91,7 @@ private:
 
 template<typename T>
 QVariant &
-qVariantFromSerializable (const Pointer<T> &p, QVariant & variant = QVariant ())
+qVariantFromSerializable (const Pointer<T> &p, QVariant & variant)
 {
     QDBusArgument argument;
 
