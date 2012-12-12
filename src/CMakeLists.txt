@@ -100,6 +100,7 @@ target_link_libraries(
     optimized ${QT_QTDBUS_LIBRARY_RELEASE}
     optimized ${QT_QTXML_LIBRARY_RELEASE}
     ${DBUS_LIBRARIES}
+    ${X11_LIBRARIES}
 )
 
 install(TARGETS ibus-qt
