@@ -74,6 +74,7 @@ private:
 	bool m_preedit_visible;
 	uint m_preedit_cursor_pos;
 	bool m_has_focus;
+	bool m_password_mode;
 	uint m_caps;
 	uint m_compose_buffer[IBUS_MAX_COMPOSE_LEN + 1];
 	int m_n_compose;

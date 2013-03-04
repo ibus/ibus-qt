@@ -23,6 +23,7 @@
 #include <QInputMethodEvent>
 #include <QTextCharFormat>
 #include <QApplication>
+#include <QLineEdit>
 #include <qibus.h>
 #include "ibus-input-context.h"
 
@@ -87,6 +88,7 @@ IBusInputContext::IBusInputContext (const BusPointer &bus)
       m_preedit_visible (false),
       m_preedit_cursor_pos (0),
       m_has_focus (false),
+      m_password_mode (false),
       m_caps (CapPreeditText | CapFocus),
       m_n_compose (0)
 {
@@ -196,6 +198,16 @@ IBusInputContext::setFocusWidget (QWidget *widget)
     if (m_context.isNull ())
         return;
 
+    m_password_mode = false;
+
+    if (m_has_focus && widget->inherits ("QLineEdit")) {
+        QLineEdit::EchoMode mode =
+                qobject_cast<QLineEdit *>(widget)->echoMode();
+        if (mode == QLineEdit::Password || mode == QLineEdit::NoEcho) {
+            m_password_mode = true;
+        }
+    }
+
     if (m_has_focus) {
         m_context->focusIn ();
     }
@@ -250,6 +262,10 @@ IBusInputContext::x11FilterEvent (QWidget *keywidget, XEvent *xevent)
     uint keyval = 0;
     uint keycode = 0;
     uint state = 0;
+
+    if (m_password_mode) {
+        return false;
+    }
 
     if (!m_has_focus) {
         m_has_focus = true;
