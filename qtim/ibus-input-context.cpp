@@ -248,9 +248,13 @@ translate_x_key_event (XEvent *xevent, uint *keyval, uint *keycode, uint *state)
         *state |= IBus::ReleaseMask;
 
     char key_str[64];
-    if (XLookupString (&xevent->xkey, key_str, sizeof (key_str), (KeySym *)keyval, 0) <= 0) {
-        *keyval = (quint32) XLookupKeysym (&xevent->xkey, 0);
-    }
+    /* Follow gtkxim module.
+     * https://git.gnome.org/browse/gtk+/tree/modules/input/gtkimcontextxim.c#n736
+     * I think XLookupString can get right keyval even if the return value
+     * is 0 but key_str might not be a string.
+     * And XLookupString won't return the negative value in my test. */
+    XLookupString (&xevent->xkey, key_str, sizeof (key_str),
+                   (KeySym *)keyval, 0);
 
     return true;
 
