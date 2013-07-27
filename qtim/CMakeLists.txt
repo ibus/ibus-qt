@@ -7,6 +7,10 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/../src
 )
 
+if (HAVE_XKB_SET_DETECTABLE_AUTO_REPEAT)
+    set(CMAKE_CXX_FLAGS -DHAVE_XKB_SET_DETECTABLE_AUTO_REPEAT)
+endif()
+
 link_directories(
     ${X11_LIBRARY_DIRS}
     ${DBUS_LIBRARY_DIRS}

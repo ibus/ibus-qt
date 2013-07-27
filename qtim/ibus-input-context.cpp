@@ -32,8 +32,7 @@
 # include <X11/Xlib.h>
 # include <X11/keysym.h>
 # include <X11/Xutil.h>
-# ifdef HAVE_X11_XKBLIB_H
-#  define HAVE_XKB
+# ifdef HAVE_XKB_SET_DETECTABLE_AUTO_REPEAT
 #  include <X11/XKBlib.h>
 # endif
 #endif
@@ -103,6 +102,13 @@ IBusInputContext::IBusInputContext (const BusPointer &bus)
     connect (m_bus, SIGNAL (disconnected (void)),
              this, SLOT (slotDisconnected (void)));
 
+#ifdef HAVE_XKB_SET_DETECTABLE_AUTO_REPEAT
+    {
+        Bool supported;
+
+        XkbSetDetectableAutoRepeat(QX11Info().display(), TRUE, &supported);
+    }
+#endif
 }
 
 IBusInputContext::~IBusInputContext (void)

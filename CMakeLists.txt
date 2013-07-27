@@ -57,6 +57,7 @@ set(CPACK_SOURCE_IGNORE_FILES
     "build/"
 )
 include(CPack)
+include(CheckFunctionExists)
 
 configure_file(ibus-qt.spec.in ibus-qt.spec)
 configure_file(docs/Doxyfile.in docs/Doxyfile)
@@ -65,6 +66,12 @@ configure_file(docs/Doxyfile.in docs/Doxyfile)
 # Requires
 # check X11
 find_package(X11 REQUIRED)
+# check for XkbSetDetectableAutoRepeat
+if (X11_Xkblib_INCLUDE_PATH)
+    set(CMAKE_REQUIRED_INCLUDES "${X11_INCLUDE_DIRS}")
+    set(CMAKE_REQUIRED_LIBRARIES "${X11_LIBRARIES}")
+    check_function_exists(XkbSetDetectableAutoRepeat HAVE_XKB_SET_DETECTABLE_AUTO_REPEAT)
+endif()
 
 # check qt
 find_package(Qt4 4.5 COMPONENTS QtCore QtGui QtDBus QtXml REQUIRED)
