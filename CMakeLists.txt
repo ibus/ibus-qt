@@ -89,24 +89,9 @@ if(NOT LIBDIR)
     endif()
 endif(NOT LIBDIR)
 
-if(NOT DOCDIR)
-    set(DOCDIR "share/doc/ibus-qt-${CPACK_PACKAGE_VERSION}")
-endif(NOT DOCDIR)
-
 if(NOT MANDIR)
     set(MANDIR "share/man")
 endif(NOT MANDIR)
-
-# =====
-# install
-set(MAIN_DOCS
-    AUTHORS
-    README
-    INSTALL)
-install(FILES ${MAIN_DOCS}
-    DESTINATION ${DOCDIR})
-
-
 
 # ======
 # sub dirs
