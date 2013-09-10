@@ -54,6 +54,8 @@ InputContext::InputContext (const BusPointer &bus, const QString &path)
                       this, SLOT (slotUpdateProperty (const QDBusVariant &)));
 
     /* others */
+    QObject::connect (m_context, SIGNAL (DeleteSurroundingText (int, uint)),
+                      this, SLOT (slotDeleteSurroundingText (int, uint)));
     QObject::connect (m_context, SIGNAL (ForwardKeyEvent (uint, uint, uint)),
                       this, SLOT (slotForwardKeyEvent (uint, uint, uint)));
     QObject::connect (m_context, SIGNAL (Enabled (void)),
@@ -288,6 +290,12 @@ void
 InputContext::slotForwardKeyEvent (uint keyval, uint keycode, uint state)
 {
     forwardKeyEvent (keyval, keycode, state);
+}
+
+void
+InputContext::slotDeleteSurroundingText (int offset, uint nchars)
+{
+    deleteSurroundingText (offset, nchars);
 }
 
 void

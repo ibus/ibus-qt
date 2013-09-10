@@ -67,6 +67,7 @@ Q_SIGNALS:
     void disabled (void);
 
     void forwardKeyEvent (uint keyval, uint keycode, uint state);
+    void deleteSurroundingText (int offset, uint nchars);
 
 private Q_SLOTS:
     void slotCommitText (const QDBusVariant &text);
@@ -94,6 +95,7 @@ private Q_SLOTS:
     void slotDisabled();
 
     void slotForwardKeyEvent(uint keyval, uint keycode, uint state);
+    void slotDeleteSurroundingText(int offset, uint nchars);
 
 /*
 signals:

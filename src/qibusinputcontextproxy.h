@@ -123,6 +123,7 @@ Q_SIGNALS: // SIGNALS
     void CommitText(const QDBusVariant &text);
     void CursorDownLookupTable();
     void CursorUpLookupTable();
+    void DeleteSurroundingText(int offset, uint nchars);
     void Disabled();
     void Enabled();
     void ForwardKeyEvent(uint keyval, uint keycode, uint state);

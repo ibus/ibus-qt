@@ -58,6 +58,7 @@ private Q_SLOTS:
 	void slotHidePreeditText (void);
 	void slotConnected (void);
 	void slotDisconnected (void);
+	void slotDeleteSurroundingText (int offset, uint nchars);
 
 private:
 	void createInputContext (void);

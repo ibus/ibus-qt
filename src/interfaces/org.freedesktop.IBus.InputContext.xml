@@ -51,6 +51,10 @@
       <arg name="keycode" type="u"/>
       <arg name="state" type="u"/>
     </signal>
+    <signal name="DeleteSurroundingText">
+      <arg name="offset" type="i"/>
+      <arg name="nchars" type="u"/>
+    </signal>
     <signal name="UpdatePreeditText">
       <arg name="text" type="v"/>
       <arg name="cursor_pos" type="u"/>
