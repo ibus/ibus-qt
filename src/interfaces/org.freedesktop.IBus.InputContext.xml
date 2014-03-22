@@ -41,6 +41,11 @@
       <arg name="desc" direction="out" type="v"/>
     </method>
     <method name="Destroy"/>
+    <method name="SetSurroundingText">
+      <arg name="text" direction="in" type="v"/>
+      <arg name="cursor_pos" direction="in" type="u"/>
+      <arg name="anchor_pos" direction="in" type="u"/>
+    </method>
     <signal name="CommitText">
       <arg name="text" type="v"/>
     </signal>
@@ -51,6 +56,7 @@
       <arg name="keycode" type="u"/>
       <arg name="state" type="u"/>
     </signal>
+    <signal name="RequireSurroundingText"/>
     <signal name="DeleteSurroundingText">
       <arg name="offset" type="i"/>
       <arg name="nchars" type="u"/>

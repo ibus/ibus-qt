@@ -89,8 +89,9 @@ IBusInputContext::IBusInputContext (const BusPointer &bus)
       m_preedit_cursor_pos (0),
       m_has_focus (false),
       m_password_mode (false),
-      m_caps (CapPreeditText | CapFocus),
-      m_n_compose (0)
+      m_caps (CapPreeditText | CapFocus | CapSurroundingText),
+      m_n_compose (0),
+      m_needs_surrounding_text (false)
 {
     Q_ASSERT (!m_bus.isNull ());
 
@@ -165,6 +166,22 @@ IBusInputContext::update (void)
     rect.translate (topleft);
 
     m_context->setCursorLocation (rect.x (), rect.y (), rect.width (), rect.height ());
+
+    if (m_needs_surrounding_text) {
+        QString surroundingText = widget->inputMethodQuery (Qt::ImSurroundingText).toString ();
+        uint cursor_pos = widget->inputMethodQuery (Qt::ImCursorPosition).toUInt ();
+        uint anchor_pos = widget->inputMethodQuery (Qt::ImAnchorPosition).toUInt ();
+
+        Text *wrappedSurroundingText = new Text (surroundingText);
+        TextPointer wrappedSurroundingTextPointer (wrappedSurroundingText);
+
+        m_context->setSurroundingText (wrappedSurroundingTextPointer, cursor_pos, anchor_pos);
+
+        // We don't destroy wrappedSurroundingText because when wrappedSurroundingTextPointer
+        // is destroyed when this function returns, it calls wrappedSurroundingText->unref()
+        // which, in turn, destroys wrappedSurroundingText. It would actually crash if
+        // we did since wrappedSurroundingText is already freed.
+    }
 
 #if 0
     QVariant value;
@@ -558,6 +575,8 @@ IBusInputContext::createInputContext (void)
             this, SLOT (slotHidePreeditText (void)));
     connect (m_context, SIGNAL (deleteSurroundingText (int, uint)),
             this, SLOT (slotDeleteSurroundingText (int, uint)));
+    connect (m_context, SIGNAL (requireSurroundingText (void)),
+            this, SLOT (slotRequireSurroundingText (void)));
 
     if (m_has_focus) {
         m_context->focusIn ();
@@ -814,4 +833,10 @@ IBusInputContext::slotDeleteSurroundingText (int offset, uint nchars)
     event.setCommitString ("", offset, nchars);
     sendEvent (event);
     update ();
+}
+
+void
+IBusInputContext::slotRequireSurroundingText (void)
+{
+    m_needs_surrounding_text = true;
 }

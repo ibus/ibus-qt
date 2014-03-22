@@ -59,6 +59,7 @@ private Q_SLOTS:
 	void slotConnected (void);
 	void slotDisconnected (void);
 	void slotDeleteSurroundingText (int offset, uint nchars);
+	void slotRequireSurroundingText (void);
 
 private:
 	void createInputContext (void);
@@ -79,6 +80,7 @@ private:
 	uint m_caps;
 	uint m_compose_buffer[IBUS_MAX_COMPOSE_LEN + 1];
 	int m_n_compose;
+	bool m_needs_surrounding_text;
 };
 
 #endif //__IBUS_INPUT_CONTEXT_H_
