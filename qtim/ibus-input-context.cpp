@@ -839,4 +839,5 @@ void
 IBusInputContext::slotRequireSurroundingText (void)
 {
     m_needs_surrounding_text = true;
+    update();
 }
