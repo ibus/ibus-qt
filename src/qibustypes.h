@@ -46,6 +46,7 @@ typedef enum {
     CapLookupTable       = 1 << 2,
     CapFocus             = 1 << 3,
     CapProperty          = 1 << 4,
+    CapSurroundingText   = 1 << 5,
 } Capabilite;
 
 typedef enum {

@@ -56,6 +56,8 @@ InputContext::InputContext (const BusPointer &bus, const QString &path)
     /* others */
     QObject::connect (m_context, SIGNAL (DeleteSurroundingText (int, uint)),
                       this, SLOT (slotDeleteSurroundingText (int, uint)));
+    QObject::connect (m_context, SIGNAL (RequireSurroundingText (void)),
+                      this, SLOT (slotRequireSurroundingText (void)));
     QObject::connect (m_context, SIGNAL (ForwardKeyEvent (uint, uint, uint)),
                       this, SLOT (slotForwardKeyEvent (uint, uint, uint)));
     QObject::connect (m_context, SIGNAL (Enabled (void)),
@@ -186,6 +188,13 @@ InputContext::setEngine (const QString &name)
     m_context->SetEngine (name);
 }
 
+void
+InputContext::setSurroundingText (const TextPointer &text, uint cursor_pos, uint anchor_pos)
+{
+    QDBusVariant dbus_text = qDBusVariantFromSerializable (text);
+    m_context->SetSurroundingText (dbus_text, cursor_pos, anchor_pos);
+}
+
 /* slots */
 void
 InputContext::slotCommitText (const QDBusVariant &text)
@@ -296,6 +305,12 @@ void
 InputContext::slotDeleteSurroundingText (int offset, uint nchars)
 {
     deleteSurroundingText (offset, nchars);
+}
+
+void
+InputContext::slotRequireSurroundingText ()
+{
+    requireSurroundingText();
 }
 
 void

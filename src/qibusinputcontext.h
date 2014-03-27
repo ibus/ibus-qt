@@ -37,6 +37,7 @@ public:
     void setCapabilities (uint caps);
     void setCursorLocation (int x, int y, int w, int h);
     void setEngine (const QString &name);
+    void setSurroundingText (const TextPointer &text, uint cursor_pos, uint anchor_pos);
 
 public:
     static InputContextPointer create (const BusPointer &bus, const QString &name);
@@ -68,6 +69,7 @@ Q_SIGNALS:
 
     void forwardKeyEvent (uint keyval, uint keycode, uint state);
     void deleteSurroundingText (int offset, uint nchars);
+    void requireSurroundingText (void);
 
 private Q_SLOTS:
     void slotCommitText (const QDBusVariant &text);
@@ -96,6 +98,7 @@ private Q_SLOTS:
 
     void slotForwardKeyEvent(uint keyval, uint keycode, uint state);
     void slotDeleteSurroundingText(int offset, uint nchars);
+    void slotRequireSurroundingText();
 
 /*
 signals:
