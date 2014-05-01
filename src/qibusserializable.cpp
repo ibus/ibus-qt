@@ -25,7 +25,7 @@ Serializable::getAttachment (const QString &key) const
 SerializablePointer
 Serializable::removeAttachment (const QString &key)
 {
-    SerializablePointer p = m_attachments.value (key, p);
+    SerializablePointer p = m_attachments.value (key);
     if (p)
         m_attachments.remove (key);
     return p;
