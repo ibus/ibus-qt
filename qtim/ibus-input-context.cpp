@@ -193,6 +193,22 @@ IBusInputContext::update (void)
         // is already freed.
     }
 
+    if (m_needs_surrounding_text) {
+        QString surroundingText = widget->inputMethodQuery (Qt::ImSurroundingText).toString ();
+        uint cursor_pos = widget->inputMethodQuery (Qt::ImCursorPosition).toUInt ();
+        uint anchor_pos = widget->inputMethodQuery (Qt::ImAnchorPosition).toUInt ();
+
+        Text *wrappedSurroundingText = new Text (surroundingText);
+        TextPointer wrappedSurroundingTextPointer (wrappedSurroundingText);
+
+        m_context->setSurroundingText (wrappedSurroundingTextPointer, cursor_pos, anchor_pos);
+
+        // We don't destroy wrappedSurroundingText because when wrappedSurroundingTextPointer
+        // is destroyed when this function returns, it calls wrappedSurroundingText->unref()
+        // which, in turn, destroys wrappedSurroundingText. It would actually crash if
+        // we did since wrappedSurroundingText is already freed.
+    }
+
 #if 0
     QVariant value;
     qDebug () << "== update == ";
