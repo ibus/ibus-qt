@@ -121,16 +121,23 @@ Bus::open (void)
 QString
 Bus::getSocketPath (void)
 {
-    QString display = getenv ("DISPLAY");
+    QString display = getenv ("WAYLAND_DISPLAY");
     QString hostname = "unix";
     QString display_number = "0";
-    /* fallback when -display is passed to QApplication with no DISPLAY env */
+    bool is_wayland = false;
+
+    if (display == NULL) {
+        display = getenv ("DISPLAY");
+    else
+        is_wayland = true;
+
+    /* fallback when -display is passed to QApplication with no [WAYLAND_]DISPLAY env */
     if (display == NULL) {
         Display * dpy = QX11Info::display();
         if (dpy)
             display = XDisplayString(dpy);
     }
-    if (display != NULL && display.contains(':')) {
+    if (!is_wayland && display != NULL && display.contains(':')) {
         QStringList strs = display.split(":");
 
         if (!strs[0].isEmpty())
