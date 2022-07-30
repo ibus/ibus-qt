@@ -1,0 +1,57 @@
+language: c
+compiler: gcc
+os: linux
+
+dist: bionic
+
+branches:
+  only:
+  - main
+
+arch:
+  - amd64
+  #- ppc64le
+  #- s390x
+  #- arm64
+
+addons:
+  apt:
+    packages:
+    # For autogen.sh
+    - autopoint
+    # For make from
+    # https://packages.ubuntu.com/search?searchon=sourcenames&keywords=ibus-qt
+    - cmake
+    - doxygen
+    - libdbus-1-dev
+    - libibus-1.0-dev
+    - libicu-dev
+    # libqt4 is available in bionic(18.04) only
+    - libqt4-dev
+    - libx11-dev
+    - pkg-config
+
+jobs:
+  include:
+  - name: Build
+    before_script:
+    - sudo apt-get -qq update
+    script:
+    - set -e
+    - git config pull.rebase false
+    - git pull --depth=200
+    # configure options from
+    # https://salsa.debian.org/debian/ibus-anthy/-/blob/master/debian/rules
+    - >
+      cmake .
+    # Set the cutom DESTDIR because the default DESTDIR
+    # /home/travis/bulid/fujiwarat/$PKG/ibus/ibus-$VERSION/_inst seems to be
+    # too long and failed to set DESTDIR to install bindings/pygobject/IBus.py
+    - >
+      make
+      VERBOSE=1
+    - >
+      make
+      package_source
+      VERBOSE=1
+
