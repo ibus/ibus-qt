@@ -44,6 +44,12 @@ set(CPACK_SOURCE_IGNORE_FILES
     "Source\\\\.tar\\\\.gz$"
     "Linux\\\\.tar\\\\.gz$"
     "moc_.*\\\\.cxx$"
+    "\\\\.back$"
+    "\\\\.back\\\\/"
+    "\\\\.diff$"
+    "\\\\.orig$"
+    "\\\\.orig\\\\/"
+    "\\\\.patch$"
     "\\\\.so$"
     "\\\\.so\\\\.*"
     "ibus-test$"
@@ -54,7 +60,8 @@ set(CPACK_SOURCE_IGNORE_FILES
     "docs/Doxyfile$"
     "docs/man"
     "docs/html"
-    "build/"
+    "ibus-qt-*-Source"
+    "test/demo-engine"
 )
 include(CPack)
 
