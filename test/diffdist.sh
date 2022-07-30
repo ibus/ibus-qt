@@ -19,9 +19,18 @@ VERSION_PATCH=$(grep VERSION_PATCH $SRCDIR/CMakeLists.txt | head -1 | awk -F\" '
 VERSION="$VERSION_MAJOR.$VERSION_MINOR.$VERSION_PATCH"
 PREV_VERSION_PATCH="$(expr $VERSION_PATCH - 1)"
 PREV_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$PREV_VERSION_PATCH"
-echo "Compare versions $PREV_VERSION $VERSION"
 zcat $DSTDIR/ibus-qt-${VERSION}-Source.tar.gz | tar xf -
-wget https://github.com/ibus/ibus-qt/releases/download/$PREV_VERSION/ibus-qt-${PREV_VERSION}-Source.tar.gz
-zcat ibus-qt-${PREV_VERSION}-Source.tar.gz | tar xf -
-diff -r ibus-qt-${PREV_VERSION}-Source ibus-qt-${VERSION}-Source || :
+mv ibus-qt-${VERSION}-Source ibus-qt-${VERSION}-Source-new
+echo "Get upstream ibus-qt-${VERSION}-Source.tar.gz"
+wget https://github.com/ibus/ibus-qt/releases/download/$VERSION/ibus-qt-${VERSION}-Source.tar.gz
+if [ $? -ne 0 ] ; then
+    # This is a bumped commit CI.
+    echo "Get upstream ibus-qt-${PREV_VERSION}-Source.tar.gz"
+    wget https://github.com/ibus/ibus-qt/releases/download/$PREV_VERSION/ibus-qt-${PREV_VERSION}-Source.tar.gz
+    DST_VERSION=$PREV_VERSION
+else
+    DST_VERSION=$VERSION
+fi
+zcat ibus-qt-${DST_VERSION}-Source.tar.gz | tar xf -
+diff -r ibus-qt-${DST_VERSION}-Source ibus-qt-${VERSION}-Source-new || :
 

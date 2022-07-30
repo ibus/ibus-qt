@@ -30,6 +30,7 @@ addons:
     - libqt4-dev
     - libx11-dev
     - pkg-config
+    - wget
 
 jobs:
   include:
@@ -54,4 +55,5 @@ jobs:
       make
       package_source
       VERBOSE=1
+    - bash -x ./test/diffdist.sh
 
