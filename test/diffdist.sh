@@ -21,6 +21,7 @@ PREV_VERSION_PATCH="$(expr $VERSION_PATCH - 1)"
 PREV_VERSION="$VERSION_MAJOR.$VERSION_MINOR.$PREV_VERSION_PATCH"
 zcat $DSTDIR/ibus-qt-${VERSION}-Source.tar.gz | tar xf -
 mv ibus-qt-${VERSION}-Source ibus-qt-${VERSION}-Source-new
+mv $DSTDIR/ibus-qt-${VERSION}-Source.tar.gz $DSTDIR/ibus-qt-${VERSION}-Source.tar.gz.new
 echo "Get upstream ibus-qt-${VERSION}-Source.tar.gz"
 wget https://github.com/ibus/ibus-qt/releases/download/$VERSION/ibus-qt-${VERSION}-Source.tar.gz
 if [ $? -ne 0 ] ; then
