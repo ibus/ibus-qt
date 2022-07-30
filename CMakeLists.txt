@@ -63,6 +63,7 @@ set(CPACK_SOURCE_IGNORE_FILES
     "docs/html"
     "ibus-qt-*-Source"
     "test/demo-engine"
+    "test/diffdist.sh"
 )
 include(CPack)
 
