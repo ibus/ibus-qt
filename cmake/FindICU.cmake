@@ -12,22 +12,29 @@ endif(ICU_CONFIG_EXECUTABLE)
 
 if(ICU_FOUND)
   # get include dirs
-  exec_program("${ICU_CONFIG_EXECUTABLE} --cppflags-searchpath|sed s/^-I//"
+  execute_process(
+    COMMAND ${ICU_CONFIG_EXECUTABLE} --cppflags-searchpath
+    COMMAND sed s/^-I//
     OUTPUT_VARIABLE ICU_INCLUDE_DIRS
-    RETURN_VALUE ERROR_CODE
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND_ERROR_IS_FATAL ANY
   )
   separate_arguments(ICU_INCLUDE_DIRS)
 
   # get libraries
-  exec_program("${ICU_CONFIG_EXECUTABLE} --ldflags-searchpath"
+  execute_process(
+    COMMAND ${ICU_CONFIG_EXECUTABLE} --ldflags-searchpath
     OUTPUT_VARIABLE ICU_LIBRARY_DIRS
-    RETURN_VALUE ERROR_CODE
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND_ERROR_IS_FATAL ANY
   )
   separate_arguments(ICU_LIBRARY_DIRS)
 
-  exec_program("${ICU_CONFIG_EXECUTABLE} --ldflags-libsonly"
+  execute_process(
+    COMMAND ${ICU_CONFIG_EXECUTABLE} --ldflags-libsonly
     OUTPUT_VARIABLE ICU_LIBRARIES
-    RETURN_VALUE ERROR_CODE
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND_ERROR_IS_FATAL ANY
   )
   separate_arguments(ICU_LIBRARIES)
 
